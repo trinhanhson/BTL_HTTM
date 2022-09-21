@@ -1,7 +1,7 @@
 import cv2
 from fingerprint_enhancer import *
 
-image1 = cv2.imread("./BTL_HTTM/Database/Train/DB4_B_2004/101_1.tif",cv2.IMREAD_GRAYSCALE) # vân tay trong database
+image1 = cv2.imread("./BTL_HTTM/Database/Train/DB4_B_2004/101_3.tif",cv2.IMREAD_GRAYSCALE) # vân tay trong database
 image = cv2.imread("./BTL_HTTM/z3723177660338_853a74371d544eac0a3f1611ea13eea31.jpg",cv2.IMREAD_GRAYSCALE) # vân tay chụp ảnh
 
 size=400
