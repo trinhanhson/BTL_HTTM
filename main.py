@@ -3,8 +3,8 @@ import os
 import time
 from cal import *
 # from FLANN_based_Matcher import *
-# from Brute_Force_Matching_with_ORB_Descriptors import *
-from Brute_Force_Matching_with_SIFT_Descriptors import *
+from Brute_Force_Matching_with_ORB_Descriptors import *
+# from Brute_Force_Matching_with_SIFT_Descriptors import *
 
 sum_tp = 0
 preArray = [0 for i in range(15)]
@@ -22,9 +22,9 @@ clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
 count = 0
 
-sumSample = 3*20
+sumSample = 0
 
-testList = [("", "") for i in range(sumSample)]
+testList = list()
 
 kpanddes = list()
 
@@ -53,6 +53,8 @@ for fd in dir_listTest:
 
         (kp, des) = create(test_original)
 
+        sumSample += 1
+
         match_bool = False
 
         for i in kpanddes:
@@ -64,9 +66,7 @@ for fd in dir_listTest:
                 best_score = score
 
         print(fd, tag_name)
-        testList[count] = (fd, tag_name)
-
-        count += 1
+        testList.append((fd, tag_name))
 
 
 count = 0

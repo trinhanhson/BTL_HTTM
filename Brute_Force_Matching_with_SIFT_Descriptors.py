@@ -15,7 +15,7 @@ def calculate(kp1, des1, kp2, des2):
 
     good = []
     for m, n in matches:
-        if m.distance < 0.74*n.distance:  # thay đổi chỉ số đc
+        if m.distance < 0.75*n.distance:  # thay đổi chỉ số đc
             good.append([m])
 
     keypoints = len(kp1)
@@ -25,9 +25,7 @@ def calculate(kp1, des1, kp2, des2):
     else:
         keypoints = len(kp1)
 
-    # print(len(good)/keypoints*100)
-
-    if len(good)/keypoints*100 > 2:  # thay đổi chỉ số đc
+    if len(good)/keypoints*100 > 2.2:  # thay đổi chỉ số đc
         return (True, len(good)/keypoints*100)
 
     return (False, -1)
