@@ -23,6 +23,11 @@ def calculate(keypoints_1, descriptors_1, keypoints_2, descriptors_2):
 
     keypoints = len(keypoints_1)
 
+    if len(keypoints_1) > len(keypoints_2):
+        keypoints = len(keypoints_2)
+    else:
+        keypoints = len(keypoints_1)
+
     if len(match_points)/keypoints*100 > 2.1:  # thay đổi chỉ số đc
         return (True, len(match_points)/keypoints*100)
 

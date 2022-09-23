@@ -77,6 +77,8 @@ for trueTag in dir_listTest:
     fp = 0
     fn = 0
 
+    print(trueTag)
+
     for i in range(len(testList)):
 
         if trueTag == testList[i][0] == testList[i][1]:
@@ -87,6 +89,11 @@ for trueTag in dir_listTest:
             fp += 1
 
     sum_tp += tp
+
+    if fp == 0 and tp == 0:
+        fp += 1
+    if(fn == 0) and tp == 0:
+        fn += 1
 
     preArray[count] = pre(tp, fp)
 
