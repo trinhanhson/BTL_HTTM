@@ -18,46 +18,52 @@ pathTest = "D:/VScode project/python/BTL_HTTM/Database/Test/"
 
 dir_listTest = os.listdir(pathTest)
 
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+
 count = 0
 
 sumSample = 3*20
 
 testList = [("", "") for i in range(sumSample)]
 
+kpanddes = list()
+
+for folder in dir_listTrain:
+    for file_name1 in os.listdir(pathTrain+folder):
+        fingerprint_database_image = cv2.imread(
+            pathTrain+"/"+folder+"/"+file_name1, cv2.IMREAD_GRAYSCALE)
+
+        fingerprint_database_image = clahe.apply(
+            fingerprint_database_image)
+
+        (kp, des) = create(fingerprint_database_image)
+
+        kpanddes.append((folder, kp, des))
+
 for fd in dir_listTest:
     for file_name in os.listdir(pathTest+fd):
         print(fd+"/"+file_name)
         tag_name = "Fake"
         best_score = -1
-        fi = ""
 
         test_original = cv2.imread(
             pathTest+"/"+fd+"/"+file_name, cv2.IMREAD_GRAYSCALE)
 
-        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-
         test_original = clahe.apply(test_original)
+
+        (kp, des) = create(test_original)
 
         match_bool = False
 
-        for folder in dir_listTrain:
-            for file_name1 in os.listdir(pathTrain+folder):
+        for i in kpanddes:
+            (match_bool, score) = calculate(
+                kp, des, i[1], i[2])
 
-                fingerprint_database_image = cv2.imread(
-                    pathTrain+"/"+folder+"/"+file_name1, cv2.IMREAD_GRAYSCALE)
+            if match_bool and score > best_score:
+                tag_name = i[0]
+                best_score = score
 
-                fingerprint_database_image = clahe.apply(
-                    fingerprint_database_image)
-
-                (match_bool, score) = calculate(
-                    test_original, fingerprint_database_image)
-
-                if match_bool and score > best_score:
-                    tag_name = folder
-                    best_score = score
-                    fi = file_name1
-
-        print(fd, tag_name+"/"+fi)
+        print(fd, tag_name)
         testList[count] = (fd, tag_name)
 
         count += 1

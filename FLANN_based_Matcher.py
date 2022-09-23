@@ -1,12 +1,16 @@
 import cv2
 
 
-def calculate(test_original, fingerprint_database_image):
+def create(image):
     sift = cv2.SIFT_create()
 
-    keypoints_1, descriptors_1 = sift.detectAndCompute(test_original, None)
-    keypoints_2, descriptors_2 = sift.detectAndCompute(
-        fingerprint_database_image, None)
+    kp, des = sift.detectAndCompute(image, None)
+
+    return (kp, des)
+
+
+def calculate(keypoints_1, descriptors_1, keypoints_2, descriptors_2):
+    sift = cv2.SIFT_create()
 
     matches = cv2.FlannBasedMatcher(dict(algorithm=1, trees=10),
                                     dict()).knnMatch(descriptors_1, descriptors_2, k=2)
@@ -14,7 +18,7 @@ def calculate(test_original, fingerprint_database_image):
     match_points = []
 
     for p, q in matches:
-        if p.distance < 0.74*q.distance: # thay đổi chỉ số đc
+        if p.distance < 0.74*q.distance:  # thay đổi chỉ số đc
             match_points.append(p)
 
     keypoints = len(keypoints_1)
@@ -26,7 +30,7 @@ def calculate(test_original, fingerprint_database_image):
 
     # print(len(match_points)/keypoints*100)
 
-    if len(match_points)/keypoints*100 > 2: # thay đổi chỉ số đc
+    if len(match_points)/keypoints*100 > 2:  # thay đổi chỉ số đc
         return (True, len(match_points)/keypoints*100)
 
     return (False, -1)

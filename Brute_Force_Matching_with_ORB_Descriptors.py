@@ -1,11 +1,15 @@
 import cv2
 
 
-def calculate(test_original, fingerprint_database_image):
+def create(image):
     orb = cv2.ORB_create()
 
-    kp1, des1 = orb.detectAndCompute(test_original, None)
-    kp2, des2 = orb.detectAndCompute(fingerprint_database_image, None)
+    kp, des = orb.detectAndCompute(image, None)
+
+    return (kp, des)
+
+
+def calculate(kp1, des1, kp2, des2):
 
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
