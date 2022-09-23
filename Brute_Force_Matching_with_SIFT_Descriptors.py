@@ -12,7 +12,7 @@ def calculate(test_original, fingerprint_database_image):
 
     good = []
     for m, n in matches:
-        if m.distance < 0.75*n.distance:
+        if m.distance < 0.75*n.distance:  # thay đổi chỉ số đc
             good.append([m])
 
     keypoints = len(kp1)
@@ -24,7 +24,7 @@ def calculate(test_original, fingerprint_database_image):
 
     # print(len(good)/keypoints*100)
 
-    if len(good)/keypoints*100 > 4:
+    if len(good)/keypoints*100 > 4:  # thay đổi chỉ số đc
         return (True, len(good)/keypoints*100)
 
     return (False, -1)
