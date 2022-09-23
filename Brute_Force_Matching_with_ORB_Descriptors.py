@@ -18,10 +18,15 @@ def calculate(kp1, des1, kp2, des2):
     match_points = []
 
     for p in matches:
-        if p.distance < 47:  # thay đổi chỉ số đc
+        if p.distance < 50:  # thay đổi chỉ số đc
             match_points.append(p)
 
     keypoints = len(kp1)
+
+    if len(kp1) > len(kp2):
+        keypoints = len(kp2)
+    else:
+        keypoints = len(kp1)
 
     if len(match_points)/keypoints*100 > 1:  # thay đổi chỉ số đc
         return (True, len(match_points)/keypoints*100)
