@@ -44,7 +44,7 @@ for fd in dir_listTest:
     for file_name in os.listdir(pathTest+fd):
         print(fd+"/"+file_name)
         tag_name = "Fake"
-        best_score = -1
+        best_score = 0
 
         test_original = cv2.imread(
             pathTest+"/"+fd+"/"+file_name, cv2.IMREAD_GRAYSCALE)
@@ -61,9 +61,9 @@ for fd in dir_listTest:
             (match_bool, score) = calculate(
                 kp, des, i[1], i[2])
 
-            if match_bool and score > best_score:
+            if match_bool and score > -best_score:
                 tag_name = i[0]
-                best_score = score
+                best_score = -score
 
         print(fd, tag_name)
         testList.append((fd, tag_name))
@@ -77,8 +77,6 @@ for trueTag in dir_listTest:
     fp = 0
     fn = 0
 
-    print(trueTag)
-
     for i in range(len(testList)):
 
         if trueTag == testList[i][0] == testList[i][1]:
@@ -87,6 +85,8 @@ for trueTag in dir_listTest:
             fn += 1
         elif trueTag == testList[i][1] != testList[i][0]:
             fp += 1
+
+    print(trueTag, tp)
 
     sum_tp += tp
 
