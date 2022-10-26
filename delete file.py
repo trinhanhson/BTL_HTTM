@@ -19,7 +19,7 @@ dir_listTest = os.listdir(pathTest)
 #     if x.endswith("_3.tif"):
 #         shutil.move(path + x, path)
 
-for folder in dir_listTest:
-    for file_name in os.listdir(pathTest+folder):
-        if file_name.endswith("_3.tif"):
-            shutil.move(pathTest+folder+"/" + file_name, pathTrain+folder)
+for folder in dir_listTrain:
+    for file_name in os.listdir(pathTrain+folder):
+        if file_name.endswith("_1.tif") or file_name.endswith("_2.tif"):
+            shutil.move(pathTrain+folder+"/" + file_name, pathTest+folder)

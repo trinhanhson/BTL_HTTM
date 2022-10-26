@@ -1,6 +1,9 @@
 import cv2
 
 
+ratio = 0.5
+
+
 def create(image):
     orb = cv2.ORB_create()
 
@@ -9,7 +12,21 @@ def create(image):
     return (kp, des)
 
 
-def calculate(kp1, des1, kp2, des2):
+def calculate(kp1, matches, threshold):
+
+    good_matches = 0
+
+    for i in matches:
+        if i < threshold:
+            good_matches += 1
+
+    if good_matches/len(kp1)*100 > ratio:
+        return (True, good_matches/len(kp1))
+    else:
+        return (False, 0)
+
+
+def calculate1(des1, des2):
 
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
@@ -17,28 +34,16 @@ def calculate(kp1, des1, kp2, des2):
 
     matches = sorted(matches, key=lambda x: x.distance)
 
-    match_points = []
+    matches = [i.distance for i in matches]
 
-    for p in matches:
-        if p.distance < 56:  # thay đổi chỉ số đc
-            match_points.append(p)
+    return matches
 
-    keypoints = len(kp1)
 
-    # if len(kp1) > len(kp2):
-    #     keypoints = len(kp2)
-    # else:
-    #     keypoints = len(kp1)
+def calculate2(matches):
 
-    if len(match_points)/keypoints*100 > 1.5:  # thay đổi chỉ số đc
-        return (True, len(match_points)/keypoints*100)
+    score = 0
+    lenMatches = int(len(matches)*((ratio+0.1)/25))
+    for i in range(lenMatches):
+        score += matches[i]
 
-    # print([i.distance for i in matches])
-
-    # if len(match_points) > 4:
-    #     return (True, len(match_points))
-
-    # if matches[0].distance < 50:
-    #     return (True, matches[0].distance)
-
-    return (False, -1)
+    return score, lenMatches
